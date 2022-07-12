@@ -4,7 +4,7 @@ java_library(
     name = "helloworld_library",
     srcs = glob(["*.java"]),
     visibility = ["//javatests/com/onecodelabs/helloworld:__pkg__"],
-    deps = ["//models:user_proto_java"],
+    deps = ["//protos/example:user_proto_java"],
 )
 
 java_binary(
