@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package models;
+
+message User {
+    string name = 1;
+    int32 age = 2;
+    bool male = 3;
+}
