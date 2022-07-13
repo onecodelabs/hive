@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package models;
+package proto.example;
 
 message User {
     string name = 1;

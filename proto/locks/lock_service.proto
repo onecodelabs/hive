@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package proto.locks;
+
+import "proto/locks/lock.proto";
+
+message AcquireRequest {
+  string name = 1;
+}
+message AcquireResponse {
+  Lock lock = 1;
+}
+
+message ReleaseRequest {}
+message ReleaseResponse {}
+
+message CheckRequest {}
+message CheckResponse {}
+
+service LockService {
+  rpc Acquire(AcquireRequest) returns (AcquireResponse);
+  rpc Release(ReleaseRequest) returns (ReleaseResponse);
+  rpc Check (CheckRequest) returns (CheckResponse);
+}
