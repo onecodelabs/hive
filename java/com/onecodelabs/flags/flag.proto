@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package com.onecodelabs.flags;
+option java_package = "com.onecodelabs.flags.proto";
+
+enum HelloEnum {
+  NO_HELLO = 0;
+  HOLA = 1;
+  CHAU = 2;
+  QUETAL = 3;
+}
+
+message FlagDescriptors {
+  repeated FlagDescriptor descriptors = 1;
+}
+
+message FlagDescriptor {
+  string name = 1;
+  string class_name = 2;
+  string field_name = 3;
+  string flag_type = 4;
+}
