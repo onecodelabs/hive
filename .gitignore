@@ -1,6 +1,7 @@
 # Bazel
 bazel-bin
 bazel-monolith
+bazel-hive
 bazel-out
 bazel-testlogs
 
