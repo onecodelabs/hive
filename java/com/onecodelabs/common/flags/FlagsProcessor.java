@@ -1,4 +1,4 @@
-package com.onecodelabs.flags;
+package com.onecodelabs.common.flags;
 
 import com.google.auto.service.AutoService;
 import com.onecodelabs.flags.proto.Flag.FlagDescriptor;
@@ -8,24 +8,13 @@ import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.tools.Diagnostic;
-import javax.tools.FileObject;
-import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-@SupportedAnnotationTypes("com.onecodelabs.flags.FlagSpec")
+@SupportedAnnotationTypes("com.onecodelabs.common.flags.FlagSpec")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @AutoService(Processor.class)
 public class FlagsProcessor extends AbstractProcessor {

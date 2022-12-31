@@ -1,4 +1,4 @@
-package com.onecodelabs.flags;
+package com.onecodelabs.common.flags;
 
 import java.util.Arrays;
 import java.util.List;

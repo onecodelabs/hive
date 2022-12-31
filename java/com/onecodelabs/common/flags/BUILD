@@ -7,7 +7,7 @@ java_plugin(
         "FlagSpec.java",
         "FlagsProcessor.java",
     ],
-    processor_class = "com.onecodelabs.flags.FlagsProcessor",
+    processor_class = "com.onecodelabs.common.flags.FlagsProcessor",
     deps = [
         ":flag_proto_java",
         "@maven//:com_google_auto_service_auto_service_annotations",
@@ -23,6 +23,7 @@ java_library(
         "Flags.java",
     ],
     exported_plugins = [":processor"],
+    visibility = ["//visibility:public"],
     deps = [":flag_proto_java"],
 )
 

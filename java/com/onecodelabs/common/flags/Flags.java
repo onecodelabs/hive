@@ -1,4 +1,4 @@
-package com.onecodelabs.flags;
+package com.onecodelabs.common.flags;
 
 import com.onecodelabs.flags.proto.Flag.FlagDescriptors;
 import com.onecodelabs.flags.proto.Flag.FlagDescriptor;
@@ -44,7 +44,7 @@ public class Flags {
         String originalName = clazzName;
         String right = "";
         Matcher m;
-        while ((m = Constants.CLASS_PATTERN.matcher(clazzName)).matches()) {
+        while ((m = com.onecodelabs.common.flags.Constants.CLASS_PATTERN.matcher(clazzName)).matches()) {
             try {
                 Class clazz = Class.forName(String.format("%s.%s%s",m.group(1),m.group(2),right));
                 return clazz;
@@ -74,7 +74,7 @@ public class Flags {
     private static Object castFlagValue(String flagClass, String intendedValue) throws ClassNotFoundException {
         Class flagTypeClazz = findClassByName(flagClass);
         if (List.class.isAssignableFrom(flagTypeClazz)) {
-            Matcher m = Constants.CLASS_PATTERN.matcher(flagClass);
+            Matcher m = com.onecodelabs.common.flags.Constants.CLASS_PATTERN.matcher(flagClass);
             if (!m.matches()) {
                 // TODO: handle
             }
@@ -106,7 +106,7 @@ public class Flags {
         while (i < args.length) {
             String arg = args[i];
             Matcher m;
-            if ((m = Constants.BOOLEAN_FLAG_PATTERN.matcher(arg)).matches()) {
+            if ((m = com.onecodelabs.common.flags.Constants.BOOLEAN_FLAG_PATTERN.matcher(arg)).matches()) {
                 map.put(m.group(1), "true");
             } else if ((m = Constants.VALUE_FLAG_PATTERN.matcher(arg)).matches()) {
                 map.put(m.group(1), m.group(2));
