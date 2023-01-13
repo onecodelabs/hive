@@ -33,7 +33,7 @@ rules_jvm_external_deps()
 
 load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
 
-rules_jvm_external_deps()
+rules_jvm_external_setup()
 
 load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
 
