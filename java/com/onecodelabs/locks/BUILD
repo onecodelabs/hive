@@ -9,6 +9,15 @@ java_library(
     ],
 )
 
+java_library(
+    name = "lock_server",
+    srcs = glob(["LockServer.java"]),
+    deps = [
+        "//proto/locks:lock_proto_java",
+        "//proto/locks:lock_service_proto_java",
+    ],
+)
+
 java_binary(
     name = "locks",
     main_class = "com.onecodelabs.locks.LockServer",

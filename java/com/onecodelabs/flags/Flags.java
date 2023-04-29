@@ -17,6 +17,27 @@ import java.util.stream.Collectors;
 public class Flags {
 
     private static final Logger logger = Logger.getLogger(Flags.class.getName());
+    private static boolean parsedSystemProperties = false;
+    private static final Object LOCK = new Object();
+
+    public static void parseSystemProperties() {
+        synchronized (LOCK) {
+            if (parsedSystemProperties) {
+                return;
+            }
+            parsedSystemProperties = true;
+
+            List<String> args = new ArrayList<>();
+            for (Map.Entry<Object, Object> entry : System.getProperties().entrySet()) {
+                args.add(String.format("--%s=%s", entry.getKey(), entry.getValue()));
+            }
+            parse(args);
+        }
+    }
+
+    public static void parse(List<String> argsList) {
+        parse(argsList.toArray(new String[0]));
+    }
 
     public static void parse(String[] args) {
         FlagDescriptors descriptors = loadDescriptors();
@@ -27,8 +48,8 @@ public class Flags {
             Field field = null;
             try {
                 field = getAnnotatedField(descriptor);
-            } catch(ClassNotFoundException|NoSuchFieldException e) {
-                logger.log(Level.WARNING, String.format("Failed to get annotated field for descriptor: %s\n", descriptor), e);
+            } catch(ClassNotFoundException|NoSuchFieldException|NullPointerException e) {
+                logger.log(Level.WARNING, String.format("Failed to get annotated field for descriptor for flag: --%s\n", key));
                 continue;
             }
             String intendedValue = parsed.get(key);

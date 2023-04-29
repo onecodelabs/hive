@@ -14,6 +14,16 @@ java_plugin(
     ],
 )
 
+proto_library(
+    name = "flag_proto",
+    srcs = ["flag.proto"],
+)
+
+java_proto_library(
+    name = "flag_proto_java",
+    deps = [":flag_proto"],
+)
+
 java_library(
     name = "flags",
     srcs = [
@@ -23,17 +33,9 @@ java_library(
         "Flags.java",
     ],
     exported_plugins = [":processor"],
+    visibility = ["//visibility:public"],
+    exports = [":flag_proto_java"],
     deps = [":flag_proto_java"],
-)
-
-proto_library(
-    name = "flag_proto",
-    srcs = ["flag.proto"],
-)
-
-java_proto_library(
-    name = "flag_proto_java",
-    deps = [":flag_proto"],
 )
 
 # Example used for testing

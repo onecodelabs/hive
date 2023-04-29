@@ -2,8 +2,11 @@ syntax = "proto3";
 
 package proto.example;
 
+option java_multiple_files = true;
+
 message User {
-    string name = 1;
-    int32 age = 2;
-    bool male = 3;
+    int32 id = 1;
+    string name = 2;
+    int32 age = 3;
+    bool male = 4;
 }

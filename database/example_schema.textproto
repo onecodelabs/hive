@@ -1,0 +1,16 @@
+# proto-file: database/schema.proto
+# proto-message: Schema
+
+proto_import: "proto.example.User"
+
+table: {
+  name: "Users"
+  column: {
+    name: "User",
+    type: "proto.example.User"
+  }
+  primary_key: {
+    column_name: "User",
+    field_name: "id"
+  }
+}

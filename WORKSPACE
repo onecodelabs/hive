@@ -61,6 +61,8 @@ maven_install(
     artifacts = [
         "com.google.auto.service:auto-service:1.0.1",
         "com.google.auto.service:auto-service-annotations:1.0.1",
+        "com.google.protobuf:protobuf-java:3.22.3",
+        "junit:junit:4.13.2",
     ] + IO_GRPC_GRPC_JAVA_ARTIFACTS,
     generate_compat_repositories = True,
     override_targets = IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS,

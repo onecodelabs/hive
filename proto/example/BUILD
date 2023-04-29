@@ -4,6 +4,7 @@ load("@rules_java//java:defs.bzl", "java_proto_library")
 proto_library(
     name = "user_proto",
     srcs = ["user.proto"],
+    visibility = ["//visibility:public"],
 )
 
 java_proto_library(
