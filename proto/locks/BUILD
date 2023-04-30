@@ -1,6 +1,4 @@
-load("@rules_proto//proto:defs.bzl", "proto_library")
-load("@rules_java//java:defs.bzl", "java_proto_library")
-load("@rules_proto_grpc//java:defs.bzl", "java_grpc_library")
+load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
 
 proto_library(
     name = "lock_proto",
@@ -19,9 +17,14 @@ proto_library(
     deps = [":lock_proto"],
 )
 
-java_grpc_library(
+java_proto_library(
     name = "lock_service_proto_java",
-    protos = [":lock_service_proto"],
+    deps = [":lock_service_proto"],
+)
+
+java_grpc_library(
+    name = "lock_service_java_grpc",
+    srcs = [":lock_service_proto"],
     visibility = ["//java/com/onecodelabs/locks:__pkg__"],
-    deps = [":lock_proto_java"],
+    deps = [":lock_service_proto_java"],
 )
