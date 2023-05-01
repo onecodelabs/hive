@@ -54,13 +54,8 @@ public class PostgresSchemaGenerator extends SchemaGenerator {
         return sb.toString();
     }
 
-    public static void main(String[] args) throws Exception {
-        Flags.parse(args);
-        new PostgresSchemaGenerator().handle();
-    }
-
     @Override
-    String generate(SchemaBundle bundle, SchemaOptions options) throws Exception {
+    String generate(SchemaBundle bundle, SchemaOptions options) {
         StringBuilder sb = new StringBuilder();
         sb.append(createDatabaseStatement(options));
         sb.append(String.format("\\connect \"%s\";\n\n", options.getDatabaseName()));
@@ -68,5 +63,10 @@ public class PostgresSchemaGenerator extends SchemaGenerator {
             sb.append(createTableStatement(table, bundle.getMetadata()));
         }
         return sb.toString();
+    }
+
+    public static void main(String[] args) throws Exception {
+        Flags.parse(args);
+        new PostgresSchemaGenerator().handle();
     }
 }

@@ -1,6 +1,8 @@
 syntax = "proto3";
 
 package proto.locks;
+option java_package = "com.onecodelabs.locks";
+option java_multiple_files = true;
 
 message Lock {
   string name = 1;

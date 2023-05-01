@@ -1,0 +1,30 @@
+# proto-file: database/schema.proto
+# proto-message: SchemaBundleMetadata
+
+proto_metadata: {
+  proto_import: "com.onecodelabs.database.Car"
+  proto_field: {
+    field_name: "id"
+    type: "STRING"
+  }
+  proto_field: {
+    field_name: "brand"
+    type: "STRING"
+  }
+  proto_field: {
+    field_name: "price"
+    type: "INT32"
+  }
+  proto_field: {
+    field_name: "is_electric"
+    type: "BOOL"
+  }
+  proto_field: {
+    field_name: "engine"
+    type: "MESSAGE"
+  }
+  proto_field: {
+    field_name: "door"
+    type: "MESSAGE"
+  }
+}

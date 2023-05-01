@@ -87,6 +87,8 @@ public class Flags {
                 return intendedValue;
             case "java.lang.Integer":
                 return Integer.valueOf(intendedValue);
+            case "java.lang.Boolean":
+                return Boolean.valueOf(intendedValue);
             default:
                 throw new IllegalArgumentException("Unsupported flag type: " + flagClass);
         }
@@ -98,6 +100,7 @@ public class Flags {
             Matcher m = Constants.CLASS_PATTERN.matcher(flagClass);
             if (!m.matches()) {
                 // TODO: handle
+                throw new IllegalArgumentException("Unrecognized class pattern for List type: " + flagClass);
             }
             String listType = m.group(3);
 
@@ -158,8 +161,8 @@ public class Flags {
         try {
             List<URL> urls = Collections.list(Flags.class.getClassLoader().getResources("flags.txt"));
             if (urls.size() == 0) {
-                // empty
-                throw new IllegalStateException("Flags file not found in urls: " + urls);
+                logger.log(Level.WARNING, "Flags file not found in urls: " + urls);
+                return FlagDescriptors.getDefaultInstance();
             } else if (urls.size() > 1) {
                 // more than 1 flags file
                 throw new IllegalStateException("Found multiple flags files not found in urls: " + urls);

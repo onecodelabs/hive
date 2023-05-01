@@ -19,6 +19,7 @@ proto_library(
 
 java_proto_library(
     name = "lock_service_proto_java",
+    visibility = ["//java/com/onecodelabs/locks:__pkg__"],
     deps = [":lock_service_proto"],
 )
 

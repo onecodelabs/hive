@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package com.onecodelabs.database;
+option java_multiple_files = true;
+
+message Car {
+  string id = 1;
+  string brand = 2;
+  int32 price = 3;
+  bool is_electric = 4;
+  Engine engine = 5;
+  repeated Door door = 6;
+}
+
+message Engine {
+
+}
+
+message Door {
+
+}

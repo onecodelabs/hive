@@ -16,10 +16,11 @@ def define_conformance_test(name, schema_input, java_proto_targets):
         name = name,
         size = "small",
         test_class = "com.onecodelabs.database.SchemaConformanceTest",
-        runtime_deps = ["//java/com/onecodelabs/database:SchemaConformanceTest"] + java_proto_targets,
+        runtime_deps = ["//javatests/com/onecodelabs/database:SchemaConformanceTest"] + java_proto_targets,
         jvm_flags = [
             "-Dschema_path=" + native.package_name() + "/" + schema_input,
         ],
+        # TODO: change with resources
         data = [schema_input],
     )
 
