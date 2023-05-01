@@ -8,11 +8,22 @@ public class Flag<T> {
         return new Flag(value);
     }
 
+    public static <E> Flag<E> empty() {
+        return of(null);
+    }
+
     public Flag(T value) {
         this.value = value;
     }
 
     public T get() {
+        return value;
+    }
+
+    public T getNotNull() {
+        if (value == null) {
+            throw new NullPointerException();
+        }
         return value;
     }
     public void set(T value) {

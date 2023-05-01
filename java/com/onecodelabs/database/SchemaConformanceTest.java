@@ -3,6 +3,7 @@ package com.onecodelabs.database;
 import com.google.protobuf.Descriptors;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
+import com.onecodelabs.common.ProtoUtils;
 import com.onecodelabs.common.ReflectionUtils;
 import com.onecodelabs.flags.Flag;
 import com.onecodelabs.flags.FlagSpec;
@@ -29,20 +30,11 @@ public class SchemaConformanceTest {
         Flags.parseSystemProperties();
     }
 
-    private static Optional<Descriptors.FieldDescriptor> getFieldDescriptor(Message message, String fieldName) {
-        return message.getDescriptorForType().getFields().stream().filter(fd -> fieldName.equals(fd.getName()))
-                .findFirst();
-    }
-
-    private static boolean isPrimitiveType(Descriptors.FieldDescriptor.Type type) {
-        return !Descriptors.FieldDescriptor.Type.MESSAGE.equals(type);
-    }
-
     @Test
     public void databaseSchema_isValid() throws IOException {
         List<String> errors = new ArrayList<>();
 
-        String fileContents = new String(Files.readAllBytes(Paths.get(DatabaseFlags.filePath.get())));
+        String fileContents = new String(Files.readAllBytes(Paths.get(DatabaseFlags.schemaPath.getNotNull())));
         Schema schema = TextFormat.parse(fileContents, Schema.class);
 
         Map<String, Message> defaultInstances = new HashMap<>();
@@ -108,7 +100,7 @@ public class SchemaConformanceTest {
                 Message message = defaultInstances.get(column.getType());
 
                 Optional<Descriptors.FieldDescriptor> descriptor =
-                        getFieldDescriptor(message, primaryKey.getFieldName());
+                        ProtoUtils.getFieldDescriptor(message, primaryKey.getFieldName());
 
                 // field exists
                 if (!descriptor.isPresent()) {
@@ -118,7 +110,7 @@ public class SchemaConformanceTest {
                 }
 
                 // field is of primitive type
-                if (!isPrimitiveType(descriptor.get().getType())) {
+                if (!ProtoUtils.isPrimitiveType(descriptor.get().getType())) {
                     errors.add(String.format("Field %s in Message %s is not of primitive type, found %s",
                             primaryKey.getFieldName(), column.getType(), descriptor.get().getType()));
                     continue;

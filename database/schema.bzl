@@ -18,23 +18,58 @@ def define_conformance_test(name, schema_input, java_proto_targets):
         test_class = "com.onecodelabs.database.SchemaConformanceTest",
         runtime_deps = ["//java/com/onecodelabs/database:SchemaConformanceTest"] + java_proto_targets,
         jvm_flags = [
-            "-Dfile_path=" + native.package_name() + "/" + schema_input,
+            "-Dschema_path=" + native.package_name() + "/" + schema_input,
         ],
         data = [schema_input],
     )
 
-def define_postgres_generator(name, schema_input):
+def define_postgres_generator(name, schema_input, java_proto_targets):
+    schema_path = native.package_name() + "/" + schema_input
     java_binary(
-        name = name,
+        name = name + "_java_binary",
         main_class = "com.onecodelabs.database.PostgresSchemaGenerator",
-        runtime_deps = ["//java/com/onecodelabs/database:generators"],
-        args = [
-            "--file_path=" + native.package_name() + "/" + schema_input,
+        runtime_deps = ["//java/com/onecodelabs/database:generators"] + java_proto_targets,
+        jvm_flags = [
+            "-Dschema_path=" + schema_path,
         ],
         data = [schema_input],
     )
+    target_name = "//" + native.package_name() + ":" + name + "_java_binary"
 
-def schema_bundle(name, schema_input, proto_libs, bundle_output):
+    native.genrule(
+        name = name,
+        outs = [name + ".sql"],
+        srcs = [schema_input],
+        tools = [target_name],
+        cmd = "./$(location %s) > \"$@\"" % (target_name),
+        executable = True,
+    )
+
+def define_bundle_generator(name, schema_input, java_proto_targets):
+    schema_path = native.package_name() + "/" + schema_input
+    java_binary(
+        name = name + "_java_binary",
+        main_class = "com.onecodelabs.database.SchemaBundleGenerator",
+        runtime_deps = ["//java/com/onecodelabs/database:SchemaBundleGenerator"] + java_proto_targets,
+        jvm_flags = [
+            "-Dschema_path=" + schema_path,
+        ],
+        data = [schema_input],
+    )
+    target_name = "//" + native.package_name() + ":" + name + "_java_binary"
+
+    native.genrule(
+        name = name,
+        outs = [name + ".bundle"],
+        srcs = [schema_input],
+        tools = [target_name],
+        cmd = "./$(location %s) > \"$@\"" % (target_name),
+        executable = True,
+    )
+
+def schema_bundle(name, schema_input, proto_libs):
     java_proto_targets = define_java_proto_libs(name, proto_libs)
     define_conformance_test(name + ".conformance", schema_input, java_proto_targets)
-    define_postgres_generator(name + ".psql", schema_input)
+    define_bundle_generator(name, schema_input, java_proto_targets)
+
+#    define_postgres_generator(name + ".psql", schema_input, java_proto_targets)

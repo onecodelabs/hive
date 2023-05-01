@@ -1,20 +1,28 @@
 package com.onecodelabs.database;
 
 import com.google.protobuf.TextFormat;
-import com.onecodelabs.flags.Flags;
-import database.Schema;
+import com.onecodelabs.common.AssertUtils;
+import database.SchemaBundle;
+import database.SchemaOptions;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public abstract class SchemaGenerator {
-    abstract String generate(Schema schema);
+    abstract String generate(SchemaBundle bundle, SchemaOptions options) throws Exception;
 
-    protected void handle() throws IOException {
-        String fileContents = new String(Files.readAllBytes(Paths.get(DatabaseFlags.filePath.get())));
-        Schema schema = TextFormat.parse(fileContents, Schema.class);
+    protected void handle() throws Exception {
+        AssertUtils.assume("Didn't find required flag --input_bundle", DatabaseFlags.inputBundle.get() != null);
+        AssertUtils.assume("Didn't find required flag --database_name", DatabaseFlags.databaseName.get() != null);
+        String inputBundle = DatabaseFlags.inputBundle.getNotNull();
+        if (inputBundle.startsWith("//")) {
+            inputBundle = inputBundle.substring(2).replace(":", "/") + ".bundle";
+        }
 
-        // TODO: implement
+        String fileContents = new String(Files.readAllBytes(Paths.get(inputBundle)));
+        SchemaBundle bundle = TextFormat.parse(fileContents, SchemaBundle.class);
+        SchemaOptions.Builder optionsBuilder = SchemaOptions.newBuilder();
+        optionsBuilder.setDatabaseName(DatabaseFlags.databaseName.getNotNull());
+        System.out.println(generate(bundle, optionsBuilder.build()).toString().trim());
     }
 }

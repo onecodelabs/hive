@@ -4,6 +4,29 @@ package database;
 
 option java_multiple_files = true;
 
+message SchemaOptions {
+  string database_name = 1;
+}
+
+message SchemaBundle {
+  Schema schema = 1;
+  SchemaBundleMetadata metadata = 2;
+}
+
+message SchemaBundleMetadata {
+  repeated ProtoMetadata proto_metadata = 2;
+}
+
+message ProtoMetadata {
+  string proto_import = 1;
+  repeated ProtoField proto_field = 2;
+}
+
+message ProtoField {
+  string field_name = 1;
+  string type = 2;
+}
+
 message Schema {
   repeated string proto_import = 1;
   string name = 2;

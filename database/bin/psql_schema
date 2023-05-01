@@ -1,0 +1,1 @@
+bazel run --ui_event_filters=-info,-stdout,-stderr --noshow_progress $2 -- --database_name=$1

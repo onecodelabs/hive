@@ -49,7 +49,7 @@ public class Flags {
             try {
                 field = getAnnotatedField(descriptor);
             } catch(ClassNotFoundException|NoSuchFieldException|NullPointerException e) {
-                logger.log(Level.WARNING, String.format("Failed to get annotated field for descriptor for flag: --%s\n", key));
+                logger.log(Level.FINEST, String.format("Failed to get annotated field for descriptor for flag: --%s\n", key));
                 continue;
             }
             String intendedValue = parsed.get(key);

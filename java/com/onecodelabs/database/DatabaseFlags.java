@@ -5,6 +5,12 @@ import com.onecodelabs.flags.FlagSpec;
 
 public class DatabaseFlags {
 
-    @FlagSpec(name = "file_path", description = "")
-    public static final Flag<String> filePath = Flag.of("");
+    @FlagSpec(name = "schema_path", description = "")
+    public static final Flag<String> schemaPath = Flag.empty();
+
+    @FlagSpec(name = "input_bundle", description = "")
+    public static final Flag<String> inputBundle = Flag.empty();
+
+    @FlagSpec(name = "database_name", description = "")
+    public static final Flag<String> databaseName = Flag.empty();
 }
