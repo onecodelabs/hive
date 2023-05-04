@@ -1,7 +1,5 @@
-#load("@rules_java//java:defs.bzl", "java_binary", "java_library")
-
 java_library(
-    name = "locks_library",
+    name = "LockServer_library",
     srcs = [
         "LockServer.java",
         "LockServiceImpl.java",
@@ -16,10 +14,10 @@ java_library(
 )
 
 java_binary(
-    name = "locks",
+    name = "LockServer",
     main_class = "com.onecodelabs.locks.LockServer",
     runtime_deps = [
-        ":locks_library",
+        ":LockServer_library",
         "@io_grpc_grpc_java//netty",
     ],
 )

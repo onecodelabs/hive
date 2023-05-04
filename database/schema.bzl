@@ -43,7 +43,6 @@ def define_postgres_generator(name, schema_input, java_proto_targets):
         srcs = [schema_input],
         tools = [target_name],
         cmd = "./$(location %s) > \"$@\"" % (target_name),
-        executable = True,
     )
 
 def define_bundle_generator(name, schema_input, java_proto_targets):
@@ -72,5 +71,3 @@ def schema_bundle(name, schema_input, proto_libs):
     java_proto_targets = define_java_proto_libs(name, proto_libs)
     define_conformance_test(name + ".conformance", schema_input, java_proto_targets)
     define_bundle_generator(name, schema_input, java_proto_targets)
-
-#    define_postgres_generator(name + ".psql", schema_input, java_proto_targets)

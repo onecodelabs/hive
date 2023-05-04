@@ -3,6 +3,7 @@ package com.onecodelabs.common;
 import com.google.protobuf.Descriptors;
 import com.google.protobuf.Message;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,5 +27,11 @@ public class ProtoUtils {
 
     public static final boolean isPrimitiveType(Descriptors.FieldDescriptor.Type type) {
         return !Descriptors.FieldDescriptor.Type.MESSAGE.equals(type);
+    }
+
+    public static final Message importProto(String className) throws Exception {
+        Class<?> clazz = ReflectionUtils.findClassByName(className);
+        Method method = clazz.getDeclaredMethod("getDefaultInstance");
+        return (Message) method.invoke(clazz);
     }
 }

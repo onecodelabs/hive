@@ -12,8 +12,8 @@ public abstract class SchemaGenerator {
     abstract String generate(SchemaBundle bundle, SchemaOptions options) throws Exception;
 
     protected void handle() throws Exception {
-        AssertUtils.assume("Didn't find required flag --input_bundle", DatabaseFlags.inputBundle.get() != null);
-        AssertUtils.assume("Didn't find required flag --database_name", DatabaseFlags.databaseName.get() != null);
+        AssertUtils.assumeTrue("Didn't find required flag --input_bundle", DatabaseFlags.inputBundle.get() != null);
+        AssertUtils.assumeTrue("Didn't find required flag --database_name", DatabaseFlags.databaseName.get() != null);
         String inputBundle = DatabaseFlags.inputBundle.getNotNull();
         if (inputBundle.startsWith("//")) {
             inputBundle = inputBundle.substring(2).replace(":", "/") + ".bundle";

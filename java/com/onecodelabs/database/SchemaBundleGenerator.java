@@ -12,13 +12,9 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class SchemaBundleGenerator {
+import static com.onecodelabs.common.ProtoUtils.importProto;
 
-    private static final Message importProto(String className) throws Exception {
-        Class<?> clazz = ReflectionUtils.findClassByName(className);
-        Method method = clazz.getDeclaredMethod("getDefaultInstance");
-        return (Message) method.invoke(clazz);
-    }
+public class SchemaBundleGenerator {
 
     // TODO: refactor so it parses proto files directly!
     public static void main(String[] args) throws Exception {

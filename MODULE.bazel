@@ -1,0 +1,2 @@
+module(name = "onecodelabs-hive", version = "1.0")
+

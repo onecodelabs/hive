@@ -1,5 +1,3 @@
-load("@rules_java//java:defs.bzl", "java_binary", "java_library")
-
 java_library(
     name = "database_flags",
     srcs = ["DatabaseFlags.java"],
