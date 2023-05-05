@@ -9,6 +9,7 @@ java_library(
     deps = [
         "//database:schema_proto_java",
         "//java/com/onecodelabs/common:utils",
+        "//java/com/onecodelabs/database:constants",
         "//java/com/onecodelabs/database:database_flags",
         "//java/com/onecodelabs/flags",
         "@maven//:com_google_protobuf_protobuf_java",

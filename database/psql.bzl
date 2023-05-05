@@ -1,7 +1,7 @@
 load("@rules_java//java:defs.bzl", "java_binary")
 load("//bzl:common.bzl", "absolute_target")
 
-def psql_schema(name, input_bundle):
+def postgres_schema(name, input_bundle):
     java_binary(
         name = name,
         main_class = "com.onecodelabs.database.PostgresSchemaGenerator",

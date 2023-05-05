@@ -5,12 +5,18 @@ proto_import: "com.onecodelabs.database.Car"
 
 table: {
   name: "Cars"
-  column: {
-    name: "Car"
-    type: "com.onecodelabs.database.Car"
-  }
-  primary_key: {
-    column_name: "Car"
-    field_name: "id"
-  }
+  column: "Car com.onecodelabs.database.Car"
+  primary_keys: "Car.id"
 }
+
+#table: {
+#  name: "Cars"
+#  column: {
+#    name: "Car"
+#    type: "com.onecodelabs.database.Car"
+#  }
+#  primary_key: {
+#    column_name: "Car"
+#    field_name: "id"
+#  }
+#}

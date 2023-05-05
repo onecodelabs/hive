@@ -1,5 +1,4 @@
 load("//database:schema.bzl", "schema_bundle")
-load("//database:psql.bzl", "psql_schema")
 
 proto_library(
     name = "schema_proto",

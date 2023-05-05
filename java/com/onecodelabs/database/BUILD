@@ -1,4 +1,10 @@
 java_library(
+    name = "constants",
+    srcs = ["Constants.java"],
+    visibility = ["//visibility:public"],
+)
+
+java_library(
     name = "database_flags",
     srcs = ["DatabaseFlags.java"],
     visibility = ["//javatests/com/onecodelabs/database:__subpackages__"],
@@ -15,6 +21,7 @@ java_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        ":constants",
         ":database_flags",
         "//database:schema_proto_java",
         "//java/com/onecodelabs/common:utils",
@@ -28,6 +35,7 @@ java_library(
     srcs = ["SchemaBundleGenerator.java"],
     visibility = ["//visibility:public"],
     deps = [
+        ":constants",
         ":database_flags",
         "//database:schema_proto_java",
         "//java/com/onecodelabs/common:utils",

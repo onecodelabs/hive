@@ -9,6 +9,11 @@ def absolute_target(target):
         return "//" + native.package_name() + target
     return target
 
+def path2target(file):
+    if file.startswith("//"):
+        return file
+    return "//" + native.package_name() + ":" + file
+
 # genrule that converts a .json file into a .textproto file.
 def json2proto(name, json_file, proto_file = None, proto_message = None, proto_deps = [], proto_lib = None):
     if not proto_lib:

@@ -73,7 +73,7 @@ public class Json2Proto {
                 DescriptorProtos.FileDescriptorSet.parseFrom(protoContents);
         // TODO: find FileDescriptorProto based on input proto file name
         DescriptorProtos.FileDescriptorProto fileDescriptorProto = fileDescriptorSet.getFile(0);
-        Message proto = ProtoUtils.importProto(getClassName(fileDescriptorProto, message));
+        Message proto = ProtoUtils.getDefaultInstance(getClassName(fileDescriptorProto, message));
         Message.Builder builder = proto.newBuilderForType();
         JsonFormat.parser().merge(jsonContents, builder);
         System.out.println(builder.build().toString());

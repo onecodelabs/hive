@@ -1,5 +1,5 @@
 load("//database:schema.bzl", "schema_bundle")
-load("//database:psql.bzl", "psql_schema")
+load("//database:psql.bzl", "postgres_schema")
 
 schema_bundle(
     name = "example_schema",
@@ -11,7 +11,7 @@ schema_bundle(
 
 # Can create a Postgres database named "FooDatabase" like this:
 # ./database/bin/psql_schema FooDatabase //database/example:psql_example_schema | psql -U postgres
-psql_schema(
-    name = "psql_example_schema",
+postgres_schema(
+    name = "postgres",
     input_bundle = ":example_schema",
 )

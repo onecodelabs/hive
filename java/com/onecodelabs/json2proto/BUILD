@@ -1,5 +1,6 @@
 load("//bzl:common.bzl", "js2proto", "json2proto")
 
+# TODO: write tests
 java_library(
     name = "Json2Proto",
     srcs = ["Json2Proto.java"],

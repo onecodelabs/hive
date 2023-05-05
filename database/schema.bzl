@@ -1,73 +1,55 @@
 load("@rules_java//java:defs.bzl", "java_binary", "java_library", "java_plugin", "java_proto_library", "java_test")
+load("//bzl:common.bzl", "absolute_target", "path2target")
 
-def define_java_proto_libs(name, proto_libs):
-    lib_targets = []
+def define_conformance_test(name, schema_input, proto_libs):
+    proto_libs_list = ""
+    separator = ""
     for proto_lib in proto_libs:
-        lib_name = name + "." + proto_lib.replace("//", "").replace("/", "_").replace(":", "_") + "." + "java_proto_library"
-        java_proto_library(
-            name = lib_name,
-            deps = [proto_lib],
-        )
-        lib_targets.append("//" + native.package_name() + ":" + lib_name)
-    return lib_targets
+        proto_lib_path = absolute_target(proto_lib).replace("//", "").replace(":", "/") + "-descriptor-set.proto.bin"
+        proto_libs_list = proto_libs_list + separator + proto_lib_path
+        separator = ","
 
-def define_conformance_test(name, schema_input, java_proto_targets):
     java_test(
         name = name,
         size = "small",
         test_class = "com.onecodelabs.database.SchemaConformanceTest",
-        runtime_deps = ["//javatests/com/onecodelabs/database:SchemaConformanceTest"] + java_proto_targets,
+        runtime_deps = ["//javatests/com/onecodelabs/database:SchemaConformanceTest"],
         jvm_flags = [
             "-Dschema_path=" + native.package_name() + "/" + schema_input,
+            "-Dproto_libs=" + proto_libs_list,
         ],
-        # TODO: change with resources
-        data = [schema_input],
+        data = [schema_input] + proto_libs,
     )
 
-def define_postgres_generator(name, schema_input, java_proto_targets):
-    schema_path = native.package_name() + "/" + schema_input
-    java_binary(
-        name = name + "_java_binary",
-        main_class = "com.onecodelabs.database.PostgresSchemaGenerator",
-        runtime_deps = ["//java/com/onecodelabs/database:generators"] + java_proto_targets,
-        jvm_flags = [
-            "-Dschema_path=" + schema_path,
-        ],
-        data = [schema_input],
-    )
-    target_name = "//" + native.package_name() + ":" + name + "_java_binary"
-
-    native.genrule(
-        name = name,
-        outs = [name + ".sql"],
-        srcs = [schema_input],
-        tools = [target_name],
-        cmd = "./$(location %s) > \"$@\"" % (target_name),
-    )
-
-def define_bundle_generator(name, schema_input, java_proto_targets):
+def define_bundle_generator(name, schema_input, proto_libs):
     schema_path = native.package_name() + "/" + schema_input
     java_binary(
         name = name + "_java_binary",
         main_class = "com.onecodelabs.database.SchemaBundleGenerator",
-        runtime_deps = ["//java/com/onecodelabs/database:SchemaBundleGenerator"] + java_proto_targets,
-        jvm_flags = [
-            "-Dschema_path=" + schema_path,
-        ],
-        data = [schema_input],
+        runtime_deps = ["//java/com/onecodelabs/database:SchemaBundleGenerator"],
+        data = [schema_input] + proto_libs,
     )
     target_name = "//" + native.package_name() + ":" + name + "_java_binary"
+
+    proto_libs_list = ""
+    separator = ""
+    for proto_lib in proto_libs:
+        proto_libs_list = proto_libs_list + separator + ("$(location %s)" % proto_lib)
+        separator = ","
 
     native.genrule(
         name = name,
         outs = [name + ".bundle"],
-        srcs = [schema_input],
+        srcs = [schema_input] + proto_libs,
         tools = [target_name],
-        cmd = "./$(location %s) > \"$@\"" % (target_name),
-        executable = True,
+        cmd = """
+                ./$(location %s) \
+                --schema_path=$(location %s) \
+                --proto_libs=%s \
+                > "$@"
+                """ % (target_name, path2target(schema_input), proto_libs_list),
     )
 
 def schema_bundle(name, schema_input, proto_libs):
-    java_proto_targets = define_java_proto_libs(name, proto_libs)
-    define_conformance_test(name + ".conformance", schema_input, java_proto_targets)
-    define_bundle_generator(name, schema_input, java_proto_targets)
+    define_conformance_test(name + ".conformance", schema_input, proto_libs)
+    define_bundle_generator(name, schema_input, proto_libs)
