@@ -24,39 +24,6 @@ public class Json2Proto {
     @FlagSpec(name = "proto_message", description = "")
     public static Flag<String> protoMessage = Flag.empty();
 
-    public static String getFileName(String filePath) {
-        String ans = filePath.substring(filePath.lastIndexOf("/") + 1);
-        ans = ans.substring(0, ans.indexOf("."));
-        return ans;
-    }
-
-    public static String getOuterClass(DescriptorProtos.FileDescriptorProto fileDescriptorProto) {
-        if (fileDescriptorProto.getOptions().getJavaMultipleFiles()) {
-            return "";
-        }
-        if (fileDescriptorProto.getOptions().hasJavaOuterClassname()) {
-            return fileDescriptorProto.getOptions().getJavaOuterClassname();
-        }
-        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, getFileName(fileDescriptorProto.getName()));
-    }
-
-    public static String getPackage(DescriptorProtos.FileDescriptorProto fileDescriptorProto) {
-        if (fileDescriptorProto.getOptions().hasJavaPackage()) {
-            return fileDescriptorProto.getOptions().getJavaPackage();
-        }
-        return fileDescriptorProto.getPackage();
-    }
-
-    public static String getClassName(DescriptorProtos.FileDescriptorProto fileDescriptorProto, String message) {
-        StringBuilder sb = new StringBuilder(getPackage(fileDescriptorProto));
-        String outerClass = getOuterClass(fileDescriptorProto);
-        if (!outerClass.isEmpty()) {
-            sb.append("." + outerClass);
-        }
-        sb.append("." + message);
-        return sb.toString();
-    }
-
     public static void main(String[] args) throws Exception {
         Flags.parse(args);
         AssertUtils.assumeTrue("Didn't find required flag --json_file", jsonFile.get() != null);
@@ -73,7 +40,7 @@ public class Json2Proto {
                 DescriptorProtos.FileDescriptorSet.parseFrom(protoContents);
         // TODO: find FileDescriptorProto based on input proto file name
         DescriptorProtos.FileDescriptorProto fileDescriptorProto = fileDescriptorSet.getFile(0);
-        Message proto = ProtoUtils.getDefaultInstance(getClassName(fileDescriptorProto, message));
+        Message proto = ProtoUtils.getDefaultInstance(ProtoUtils.getClassName(fileDescriptorProto, message));
         Message.Builder builder = proto.newBuilderForType();
         JsonFormat.parser().merge(jsonContents, builder);
         System.out.println(builder.build().toString());

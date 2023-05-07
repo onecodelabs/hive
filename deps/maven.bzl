@@ -9,6 +9,7 @@ def setup_maven(extra_artifacts = [], override_targets = []):
             "com.google.protobuf:protobuf-java-util:3.22.3",
             "com.google.guava:guava:31.1-jre",
             "junit:junit:4.13.2",
+            "com.google.inject:guice:5.1.0",
         ] + extra_artifacts,
         generate_compat_repositories = True,
         override_targets = override_targets,

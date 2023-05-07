@@ -3,6 +3,7 @@ syntax = "proto3";
 package proto.locks;
 option java_package = "com.onecodelabs.locks";
 option java_multiple_files = true;
+option java_generic_services = true;
 
 import "proto/locks/lock.proto";
 
@@ -20,6 +21,12 @@ message CheckRequest {}
 message CheckResponse {}
 
 service LockService {
+  rpc Acquire(AcquireRequest) returns (AcquireResponse);
+  rpc Release(ReleaseRequest) returns (ReleaseResponse);
+  rpc Check (CheckRequest) returns (CheckResponse);
+}
+
+service FooService {
   rpc Acquire(AcquireRequest) returns (AcquireResponse);
   rpc Release(ReleaseRequest) returns (ReleaseResponse);
   rpc Check (CheckRequest) returns (CheckResponse);

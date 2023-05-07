@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package com.onecodelabs.serverframework.example;
+option java_multiple_files = true;
+option java_generic_services = true;
+
+import "java/com/onecodelabs/serverframework/example/blog.proto";
+
+message GetBlogRequest {
+  int32 blog_id = 1;
+}
+
+message GetBlogResponse {
+  Blog blog = 1;
+}
+
+message CreateBlogRequest {
+  // id shouldn't be set, it's ignored in this request
+  Blog blog = 1;
+}
+
+message CreateBlogResponse {
+  Blog blog = 1;
+}
+
+message ListBlogsRequest {
+  ListBlogsFilters filters = 1;
+  Pagination pagination = 2;
+}
+
+message ListBlogsResponse {
+  repeated Blog blog = 1;
+  ListBlogsRequest next_page = 2;
+}
+
+message ListBlogsFilters {
+  Blog blog = 1;
+}
+
+message Pagination {
+  // 0-indexed, defaults to 0
+  int32 page = 1;
+
+  // defaults to 20
+  int32 items_per_page = 2;
+}
+
+service BlogService {
+  rpc GetBlog(GetBlogRequest) returns (GetBlogResponse);
+  rpc CreateBlog(CreateBlogRequest) returns (CreateBlogResponse);
+  rpc ListBlogs(ListBlogsRequest) returns (ListBlogsResponse);
+}

@@ -2,7 +2,7 @@ package com.onecodelabs.locks;
 
 import io.grpc.stub.StreamObserver;
 
-public class LockServiceImpl extends LockServiceGrpc.LockServiceImplBase {
+public class FooServiceImpl extends FooServiceGrpc.FooServiceImplBase {
     @Override
     public void acquire(AcquireRequest request, StreamObserver<AcquireResponse> responseObserver) {
         System.out.println(LockServiceGrpc.class);
